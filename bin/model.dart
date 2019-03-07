@@ -105,8 +105,7 @@ class Product {
 }
 
 class NutritionFacts {
-  final dynamic servingSizeQuantity;
-  final dynamic servingSizeUnit;
+  final String servingSize;
   final Nutriment calories;
   final Nutriment fat;
   final Nutriment saturatedFat;
@@ -119,8 +118,7 @@ class NutritionFacts {
   final Nutriment energy;
 
   NutritionFacts.fromAPI(Map<String, dynamic> api, dynamic servingSize)
-      : servingSizeQuantity = extractServingSizeQuantity(servingSize),
-        servingSizeUnit = extractServingSizeUnit(servingSize),
+      : servingSize = servingSize,
         calories = Nutriment.fromAPI(api, 'calories'),
         fat = Nutriment.fromAPI(api, 'fat'),
         saturatedFat = Nutriment.fromAPI(api, 'saturated-fat'),
@@ -156,10 +154,7 @@ class NutritionFacts {
 
   Map<String, dynamic> toJson() {
     return {
-      'servingSize': {
-        'unit': servingSizeUnit,
-        'quantity': servingSizeQuantity,
-      },
+      'servingSize': servingSize,
       'calories': calories.toJson(),
       'fat': fat.toJson(),
       'saturatedFat': saturatedFat.toJson(),
