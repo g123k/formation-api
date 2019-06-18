@@ -14,6 +14,7 @@ class Product {
   final List<String> traces;
   final List<String> allergens;
   final Map<String, String> additives;
+  final NutrientLevels nutrientLevels;
   final NutritionFacts nutritionFacts;
   final bool ingredientsFromPalmOil;
 
@@ -34,6 +35,8 @@ class Product {
         additives = extractAdditives(api['product']['additives_tags']),
         nutritionFacts = NutritionFacts.fromAPI(
             api['product']['nutriments'], api['product']['serving_size']),
+        nutrientLevels =
+            NutrientLevels.fromAPI(api['product']['nutrient_levels']),
         ingredientsFromPalmOil = extractPalmOil(
             api['product']['ingredients_from_or_that_may_be_from_palm_oil_n']);
 
@@ -91,6 +94,7 @@ class Product {
       'traces': traces,
       'additives': additives,
       'allergens': allergens,
+      'nutrientLevels': nutrientLevels.toJson(),
       'nutritionFacts': nutritionFacts.toJson(),
       'containsPalmOil': ingredientsFromPalmOil
     };
@@ -188,6 +192,28 @@ class Nutriment {
       'unit': unit,
       'perServing': perServing.toString(),
       'per100g': per100g.toString()
+    };
+  }
+}
+
+class NutrientLevels {
+  final String salt;
+  final String saturatedFat;
+  final String sugars;
+  final String fat;
+
+  NutrientLevels.fromAPI(Map<String, dynamic> api)
+      : salt = api['salt'],
+        saturatedFat = api['saturated-fat'],
+        sugars = api['sugars'],
+        fat = api['fat'];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'fat': fat,
+      'salt': salt,
+      'saturatedFat': saturatedFat,
+      'sugars': sugars
     };
   }
 }
