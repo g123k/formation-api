@@ -59,4 +59,5 @@ Future<shelf.Response> _echoRequest(shelf.Request request) async {
   return shelf.Response.internalServerError();
 }
 
-Map<String, String> headers() => {"Content-type": "application/json"};
+Map<String, String> headers() =>
+    {"Content-type": "application/json", "Access-Control-Allow-Origin": "*"};
