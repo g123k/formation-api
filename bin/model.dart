@@ -52,7 +52,8 @@ class Product {
 
     return Collection(text
             .split(',')
-            .map((item) => item.replaceAll('****', ',').trim())
+            .map((item) =>
+                item.replaceAll('****', ',').replaceFirst('en:', '').trim())
             .toList(growable: false))
         .distinct()
         .toList(growable: false);
