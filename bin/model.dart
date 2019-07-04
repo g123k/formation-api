@@ -47,13 +47,21 @@ class Product {
 
     RegExp('\\(.*?\\)').allMatches(text).forEach((match) {
       var group = match.group(0);
-      text = text.replaceAll(group, group.replaceAll(',', '****'));
+      text = text.replaceAll(
+          group,
+          group
+              .replaceAll(',', '****')
+              .replaceFirst('en:', '')
+              .replaceFirst('fr:', ''));
     });
 
     return Collection(text
             .split(',')
-            .map((item) =>
-                item.replaceAll('****', ',').replaceFirst('en:', '').trim())
+            .map((item) => item
+                .replaceAll('****', ',')
+                .replaceFirst('en:', '')
+                .replaceFirst('fr:', '')
+                .trim())
             .toList(growable: false))
         .distinct()
         .toList(growable: false);
