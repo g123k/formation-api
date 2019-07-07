@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import 'model.dart';
-
-Future<Product> findProductByBarcode(String barcode) async {
+Future<dynamic> findProductByBarcode(String barcode) async {
   print("Finding product $barcode");
 
   try {
@@ -15,7 +13,7 @@ Future<Product> findProductByBarcode(String barcode) async {
       print("Product $barcode not found");
       return null;
     } else {
-      return Product.fromAPI(json.decode(response.body));
+      return json.decode(response.body);
     }
   } catch (e, trace) {
     print('$e:$trace');

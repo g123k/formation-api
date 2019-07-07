@@ -1,63 +1,69 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:args/args.dart';
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
-import 'network.dart';
+import 'network/network.dart';
+import 'network/request.dart';
+import 'network/requests/v1/product/product.dart';
+import 'network/requests/v2/product/product.dart';
+import 'network/response.dart';
 
-main(List<String> args) async {
-  var parser = ArgParser()..addOption('port', abbr: 'p', defaultsTo: '8080');
-
-  var result = parser.parse(args);
-
-  var port = int.tryParse(result['port']);
-
-  if (port == null) {
-    stdout.writeln(
-        'Could not parse port value "${result['port']}" into a number.');
-    // 64: command line usage error
-    exitCode = 64;
-    return;
-  }
-
+void runServer(int port) async {
   var handler = const shelf.Pipeline()
       .addMiddleware(shelf.logRequests())
-      .addHandler(_echoRequest);
+      .addHandler(_onNewRequest);
 
   var server = await io.serve(handler, 'localhost', port);
   print('Serving at http://${server.address.host}:${server.port}');
 }
 
-Future<shelf.Response> _echoRequest(shelf.Request request) async {
-  var url = request.url;
-  if (request.method == "GET" && url.path.startsWith("getProduct")) {
-    String barcode = url.queryParameters['barcode'];
+Future<shelf.Response> _onNewRequest(shelf.Request request) async {
+  try {
+    var urlRequest = InternalRequest(request.url, request.method);
 
-    if (barcode == null || barcode.isEmpty) {
-      return shelf.Response.internalServerError(
-          body: json.encode({'response': null, 'error': 'Barcode is missing'}),
-          headers: headers());
+    if (urlRequest.method == RequestMethod.GET &&
+        urlRequest.endpoint == 'getProduct') {
+      return await _getProductRequest(urlRequest);
     }
 
-    var product = await findProductByBarcode(barcode);
-    if (product == null) {
-      return shelf.Response.notFound(
-          json.encode({
-            'response': null,
-            'error': 'Product with barcode $barcode not found'
-          }),
-          headers: headers());
-    } else {
-      return shelf.Response.ok(
-          json.encode({'response': product.toJson(), 'error': null}),
-          headers: headers());
-    }
+    return shelf.Response.internalServerError();
+  } catch (e, trace) {
+    print('$e\n$trace');
+    return shelf.Response.internalServerError();
   }
-
-  return shelf.Response.internalServerError();
 }
 
-Map<String, String> headers() =>
-    {"Content-type": "application/json", "Access-Control-Allow-Origin": "*"};
+Future<shelf.Response> _getProductRequest(InternalRequest request) async {
+  String barcode = request.queryParameters('barcode');
+
+  if (barcode == null || barcode.isEmpty) {
+    return shelf.Response.internalServerError(
+        body: InternalResponse.error('Barcode is missing').toJson(),
+        headers: defaultResponseHeaders());
+  }
+
+  var resp = await findProductByBarcode(barcode);
+  if (resp == null) {
+    return shelf.Response.notFound(
+        InternalResponse.error('Product with barcode $barcode not found')
+            .toJson(),
+        headers: defaultResponseHeaders());
+  } else {
+    if (request.version == 2) {
+      String language =
+          request.queryParameters('lng') ?? request.queryParameters('language');
+
+      return shelf.Response.ok(
+          InternalResponse.data(
+                  ProductV2.fromAPI(resp, language ?? 'fr').toJson(language))
+              .toJson(),
+          headers: defaultResponseHeaders());
+    } else {
+      return shelf.Response.ok(
+          InternalResponse.data(Product.fromAPI(resp)).toJson(),
+          headers: defaultResponseHeaders());
+    }
+  }
+}
+
+Map<String, String> defaultResponseHeaders() =>
+    {'Content-type': 'application/json', 'Access-Control-Allow-Origin': '*'};
