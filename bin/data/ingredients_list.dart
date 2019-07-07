@@ -1,4 +1,6 @@
-const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
+import 'additives_list.dart';
+
+const Map<String, List<IngredientTranslation>> _ingredientsTranslations = {
   'en:almond': [
     IngredientTranslation('en', 'almond'),
     IngredientTranslation('fr', 'amandes')
@@ -59,22 +61,6 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
     IngredientTranslation('en', 'pectine'),
     IngredientTranslation('fr', 'pectine')
   ],
-  'en:e450i': [
-    IngredientTranslation('en', 'e450i'),
-    IngredientTranslation('fr', 'diphosphate disodique')
-  ],
-  'en:e471': [
-    IngredientTranslation('en', 'e471'),
-    IngredientTranslation('fr', 'e471')
-  ],
-  'en:e500': [
-    IngredientTranslation('en', 'e500'),
-    IngredientTranslation('fr', 'bicarbonate de sodium')
-  ],
-  'en:e503': [
-    IngredientTranslation('en', 'E503'),
-    IngredientTranslation('fr', 'E503')
-  ],
   'en:egg': [
     IngredientTranslation('en', 'egg'),
     IngredientTranslation('fr', 'oeuf')
@@ -115,6 +101,10 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
     IngredientTranslation('en', 'lactose'),
     IngredientTranslation('fr', 'lactose')
   ],
+  'en:light-cream': [
+    IngredientTranslation('en', 'light cream'),
+    IngredientTranslation('fr', 'crème légère')
+  ],
   'en:milk': [
     IngredientTranslation('en', 'milk'),
     IngredientTranslation('fr', 'lait')
@@ -122,6 +112,14 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
   'en:milk-proteins': [
     IngredientTranslation('en', 'milk proteins'),
     IngredientTranslation('fr', 'protéines de lait')
+  ],
+  'en:natural-flavouring': [
+    IngredientTranslation('en', 'natural flavouring'),
+    IngredientTranslation('fr', 'arômes naturels')
+  ],
+  'en:natural-vanilla-extract': [
+    IngredientTranslation('en', 'natural vanilla extract'),
+    IngredientTranslation('fr', 'extrait naturel de vanille')
   ],
   'en:natural-vanilla-flavouring': [
     IngredientTranslation('en', 'natural vanilla flavouring'),
@@ -135,6 +133,10 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
     IngredientTranslation('en', 'palm fat'),
     IngredientTranslation('fr', 'graisses végétales de palme')
   ],
+  'en:peanuts': [
+    IngredientTranslation('en', 'peanuts'),
+    IngredientTranslation('fr', 'cacahuètes')
+  ],
   'en:potato-starch': [
     IngredientTranslation('en', 'potato starch'),
     IngredientTranslation('fr', 'amidon de pomme de terre')
@@ -147,6 +149,10 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
     IngredientTranslation('en', 'salt'),
     IngredientTranslation('fr', 'sel')
   ],
+  'en:skimmed-milk': [
+    IngredientTranslation('en', 'skimmed milk'),
+    IngredientTranslation('fr', 'lait écrémé')
+  ],
   'en:skimmed-milk-powder': [
     IngredientTranslation('en', 'skimmed milk powder'),
     IngredientTranslation('fr', 'lait écrémé en poudre')
@@ -158,6 +164,10 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
   'en:soybeans': [
     IngredientTranslation('en', 'soybeans'),
     IngredientTranslation('fr', 'soja')
+  ],
+  'en:stabiliser': [
+    IngredientTranslation('en', 'stabiliser'),
+    IngredientTranslation('fr', 'stabilisants')
   ],
   'en:sugar': [
     IngredientTranslation('en', 'sugar'),
@@ -227,11 +237,53 @@ const Map<String, List<IngredientTranslation>> ingredientsTranslations = {
     IngredientTranslation('en', 'lutein extract'),
     IngredientTranslation('fr', 'extrait de lutéine')
   ],
+  'fr:naturel': [
+    IngredientTranslation('en', 'natural'),
+    IngredientTranslation('fr', 'naturel')
+  ],
   'fr:poudre de _lactosérum_': [
     IngredientTranslation('en', 'lactoserum powder'),
     IngredientTranslation('fr', 'poudre de lactosérum')
   ],
+  'da:fedtfattig-kakao': [
+    IngredientTranslation('en', 'low fat cocoa'),
+    IngredientTranslation('fr', 'cacao maigre')
+  ],
 };
+
+List<IngredientTranslation> ingredientsTranslations(String id) {
+  var translations = _ingredientsTranslations[id];
+  if (translations != null) {
+    return translations;
+  } else {
+    id = id.split(':')[1];
+
+    // Additive
+    if (id.startsWith(RegExp('[eE][0-9]{3,4}'))) {
+      var additive = additivesList[id];
+
+      if (additive != null) {
+        return [
+          IngredientTranslation('en', id),
+          IngredientTranslation('fr', additive),
+        ];
+      } else {
+        return [
+          IngredientTranslation('en', id),
+          IngredientTranslation('fr', id),
+        ];
+      }
+      // Unknown product
+    } else {
+      id = id.replaceAll('-', '');
+
+      return [
+        IngredientTranslation('en', id),
+        IngredientTranslation('fr', id),
+      ];
+    }
+  }
+}
 
 IngredientTranslation findIngredientTranslation(
     List<IngredientTranslation> list, String language) {

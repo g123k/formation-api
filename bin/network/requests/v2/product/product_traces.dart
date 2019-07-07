@@ -17,7 +17,7 @@ class ProductTraces {
     List<String> list = [];
 
     for (var tag in tags) {
-      var translations = ingredientsTranslations[tag];
+      var translations = ingredientsTranslations(tag);
 
       var ingredient = findIngredientTranslation(translations, lng);
       if (ingredient != null) {
@@ -64,7 +64,7 @@ class _TraceItem {
   final String id;
   final List<IngredientTranslation> translations;
 
-  _TraceItem.fromAPI(this.id) : translations = ingredientsTranslations[id];
+  _TraceItem.fromAPI(this.id) : translations = ingredientsTranslations(id);
 
   Map<String, Object> toJson() => {
         'translations':

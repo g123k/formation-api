@@ -23,7 +23,7 @@ class ProductIngredients {
     for (var ingredient in ingredients) {
       var ingredientItem = _IngredientItem.fromAPI(ingredient);
 
-      if (ingredientItem != null) {
+      if (ingredientItem != null && ingredientItem.translations != null) {
         list.add(ingredientItem);
       } else {
         print('Ingredient not found: $ingredient');
@@ -76,7 +76,7 @@ class _IngredientItem {
         vegan = api['vegan'] == 'yes',
         vegetarian = api['vegetarian'] == 'yes',
         percent = api['percent'],
-        translations = ingredientsTranslations[api['id']],
+        translations = ingredientsTranslations(api['id']),
         containsPalmOil = api['from_palm_oil'] == 'yes';
 
   Map<String, Object> toJson() => {
