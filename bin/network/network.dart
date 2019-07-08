@@ -13,7 +13,14 @@ Future<dynamic> findProductByBarcode(String barcode) async {
       print("Product $barcode not found");
       return null;
     } else {
-      return json.decode(response.body);
+      var body = json.decode(response.body);
+
+      if (body['status'] == 0 &&
+          body['status_verbose'] == 'product not found') {
+        return null;
+      } else {
+        return body;
+      }
     }
   } catch (e, trace) {
     print('$e:$trace');
