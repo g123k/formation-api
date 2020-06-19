@@ -1,6 +1,7 @@
 import '../../../../data/additives_list.dart';
 import '../../../../utils/text_utils.dart';
 import 'product_allergens.dart';
+import 'product_analysis.dart';
 import 'product_ingredients.dart';
 import 'product_nutrition.dart';
 import 'product_pictures.dart';
@@ -26,9 +27,11 @@ class ProductV2 {
   final Map<String, String> additives;
   final ProductNutrientLevels nutrientLevels;
   final ProductNutritionFacts nutritionFacts;
+  final ProductAnalysis analysis;
 
   ProductV2.fromAPI(Map<String, dynamic> api, String lng)
-      : name = api['product']['product_name'],
+      : name = api['product']['product_name_$lng'] ??
+            api['product']['product_name'],
         altName = api['product']['generic_name_$lng'] ??
             api['product']['generic_name'],
         barcode = api['code'],
@@ -51,7 +54,9 @@ class ProductV2 {
         nutritionFacts = ProductNutritionFacts.fromAPI(
             api['product']['nutriments'], api['product']['serving_size']),
         nutrientLevels = ProductNutrientLevels.fromAPI(
-            api['product']['nutrient_levels'], api['product']['nutriments']);
+            api['product']['nutrient_levels'], api['product']['nutriments']),
+        analysis = ProductAnalysis.fromAPI(
+            api['product']['ingredients_analysis_tags']);
 
   static Map<String, String> extractAdditives(List additivesTags) {
     if (additivesTags == null || additivesTags.isEmpty) {
@@ -94,7 +99,8 @@ class ProductV2 {
       'traces': traces.toJson(language),
       'additives': additives,
       'allergens': allergens.toJson(language),
-      'packaging': packaging
+      'packaging': packaging,
+      'analysis': analysis.toJson()
     };
   }
 }
