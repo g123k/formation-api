@@ -91,7 +91,7 @@ class ProductV2 {
       'countries': countries,
       'manufacturingCountries': manufacturingCountries,
       'nutriScore': nutriScore?.toUpperCase(),
-      'novaScore': novaScore,
+      'novaScore': int.parse(novaScore, onError: (err) => 1),
       'nutritionScore': nutritionScore,
       'ingredients': ingredients.toJson(language),
       'nutrientLevels': nutrientLevels.toJson(),
