@@ -10,6 +10,7 @@ import 'product_traces.dart';
 class ProductV2 {
   final String name;
   final String altName;
+  final String url;
   final String barcode;
   final ProductPictures pictures;
   final String quantity;
@@ -20,6 +21,9 @@ class ProductV2 {
   final List<String> stores;
   final String nutriScore;
   final String novaScore;
+  final int ecoScore;
+  final String ecoScoreGrade;
+  final String packagingText;
   final int nutritionScore;
   final ProductIngredients ingredients;
   final ProductTraces traces;
@@ -35,6 +39,7 @@ class ProductV2 {
         altName = api['product']['generic_name_$lng'] ??
             api['product']['generic_name'],
         barcode = api['code'],
+        url = api['code'],
         pictures = ProductPictures.fromAPI(api['product']),
         quantity = api['product']['quantity'],
         nutritionScore =
@@ -47,6 +52,10 @@ class ProductV2 {
         packaging = TextUtils.stringToList(api['product']['packaging']),
         nutriScore = api['product']['nutrition_grades'],
         novaScore = api['product']['nova_groups'],
+        ecoScore = api['product']['ecoscore_score'],
+        ecoScoreGrade = api['product']['ecoscore_grade'],
+        packagingText = api['product']['packaging_text_fr'] ??
+            api['product']['packaging_text'],
         ingredients = ProductIngredients.fromAPI(api['product'], lng),
         traces = ProductTraces.fromAPI(api['product'], lng),
         allergens = ProductAllergens.fromAPI(api['product'], lng),
@@ -91,7 +100,9 @@ class ProductV2 {
       'countries': countries,
       'manufacturingCountries': manufacturingCountries,
       'nutriScore': nutriScore?.toUpperCase(),
-      'novaScore': int.parse(novaScore, onError: (err) => 1),
+      'novaScore': int.tryParse(novaScore) ?? 1,
+      'ecoScore': ecoScore,
+      'ecoScoreGrade': ecoScoreGrade?.toUpperCase(),
       'nutritionScore': nutritionScore,
       'ingredients': ingredients.toJson(language),
       'nutrientLevels': nutrientLevels.toJson(),
