@@ -116,7 +116,7 @@ class ProductV2 {
       'countries': countries,
       'manufacturingCountries': manufacturingCountries,
       'nutriScore': nutriScore?.toUpperCase(),
-      'novaScore': int.tryParse(novaScore) ?? 1,
+      'novaScore': novaScore != null ? int.tryParse(novaScore) : null,
       'ecoScore': ecoScore,
       'ecoScoreGrade': ecoScoreGrade?.toUpperCase(),
       'nutritionScore': nutritionScore,
