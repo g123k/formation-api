@@ -4,7 +4,7 @@ import 'package:args/args.dart';
 
 import 'server.dart';
 
-main(List<String> args) async {
+void main(List<String> args) async {
   var parser = ArgParser()..addOption('port', abbr: 'p', defaultsTo: '8080');
 
   var result = parser.parse(args);

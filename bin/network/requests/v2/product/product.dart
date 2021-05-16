@@ -7,6 +7,22 @@ import 'product_nutrition.dart';
 import 'product_pictures.dart';
 import 'product_traces.dart';
 
+class Products {
+  final Iterable<ProductV2> products;
+
+  Products.fromAPI(Map<String, dynamic> api, String lng)
+      : products = (api['products'] as List)
+            .map<ProductV2>((dynamic product) => ProductV2.fromAPI({
+                  'product': product,
+                  'code': product['_id'],
+                }, lng));
+
+  Map<String, dynamic> toJson(String language) => {
+        'products':
+            products.map((e) => e.toJson(language)).toList(growable: false)
+      };
+}
+
 class ProductV2 {
   final String name;
   final String altName;
