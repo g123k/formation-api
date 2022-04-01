@@ -1,5 +1,5 @@
+import '../../../../../utils/text_utils.dart';
 import '../../../../data/additives_list.dart';
-import '../../../../utils/text_utils.dart';
 
 class Product {
   final String name;
@@ -7,15 +7,15 @@ class Product {
   final String barcode;
   final String picture;
   final String quantity;
-  final List<String> brands;
-  final List<String> countries;
-  final List<String> manufacturingCountries;
+  final List<String>? brands;
+  final List<String>? countries;
+  final List<String>? manufacturingCountries;
   final String nutriScore;
   final String novaScore;
-  final List<String> ingredients;
-  final List<String> traces;
-  final List<String> allergens;
-  final Map<String, String> additives;
+  final List<String>? ingredients;
+  final List<String>? traces;
+  final List<String>? allergens;
+  final Map<String, String>? additives;
   final NutrientLevels nutrientLevels;
   final NutritionFacts nutritionFacts;
   final bool ingredientsFromPalmOil;
@@ -44,19 +44,19 @@ class Product {
         ingredientsFromPalmOil = extractPalmOil(
             api['product']['ingredients_from_or_that_may_be_from_palm_oil_n']);
 
-  static Map<String, String> _extractAdditives(List additivesTags) {
+  static Map<String, String>? _extractAdditives(List? additivesTags) {
     if (additivesTags == null || additivesTags.isEmpty) {
       return null;
     }
 
-    Map<String, String> res = {};
+    var res = <String, String>{};
 
     for (var additive in additivesTags) {
       if (additive is String) {
         var additiveId = additive.split(':')[1].toUpperCase();
         var additiveName = additivesList[additiveId];
 
-        if (additiveId != null && additiveName != null) {
+        if (additiveName != null) {
           res[additiveId] = additiveName;
         }
       }
@@ -121,21 +121,21 @@ class NutritionFacts {
         energy = Nutriment.fromAPI(api, 'energy'),
         salt = Nutriment.fromAPI(api, 'salt');
 
-  static String extractServingSizeQuantity(dynamic servingSize) {
+  static String? extractServingSizeQuantity(dynamic servingSize) {
     if (servingSize == null || servingSize is! String) {
       return null;
     }
 
-    var lastIndex = (servingSize as String).lastIndexOf(' ');
-    return (servingSize as String).substring(0, lastIndex);
+    var lastIndex = (servingSize).lastIndexOf(' ');
+    return (servingSize).substring(0, lastIndex);
   }
 
-  static String extractServingSizeUnit(dynamic servingSize) {
+  static String? extractServingSizeUnit(dynamic servingSize) {
     if (servingSize == null || servingSize is! String) {
       return null;
     }
 
-    var splitted = (servingSize as String).trim().split(" ");
+    var splitted = (servingSize).trim().split(' ');
     if (splitted.isNotEmpty) {
       return splitted[splitted.length - 1];
     } else {
@@ -161,7 +161,7 @@ class NutritionFacts {
 }
 
 class Nutriment {
-  final String unit;
+  final String? unit;
   final dynamic perServing;
   final dynamic per100g;
 
@@ -170,7 +170,7 @@ class Nutriment {
         perServing = api['${name}_serving'],
         unit = api['${name}_unit'];
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic>? toJson() {
     if (unit == null && perServing == null && per100g == null) {
       return null;
     }

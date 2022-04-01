@@ -1,9 +1,9 @@
-import 'package:queries/collections.dart';
+import 'package:flinq/flinq.dart';
 
 class TextUtils {
   const TextUtils._();
 
-  static String parseString(dynamic value) {
+  static String? parseString(dynamic value) {
     if (value == null) {
       return null;
     } else if (value is String) {
@@ -13,7 +13,7 @@ class TextUtils {
     }
   }
 
-  static bool isEmpty(String text) {
+  static bool isEmpty(String? text) {
     if (text == null) {
       return true;
     } else {
@@ -21,7 +21,7 @@ class TextUtils {
     }
   }
 
-  static bool isNotEmpty(String text) {
+  static bool isNotEmpty(String? text) {
     if (text == null) {
       return false;
     } else {
@@ -29,30 +29,28 @@ class TextUtils {
     }
   }
 
-  static List<String> stringToList(String text) {
+  static List<String>? stringToList(String? text) {
     if (text == null || text.isEmpty) {
       return null;
     }
 
     RegExp('\\(.*?\\)').allMatches(text).forEach((match) {
       var group = match.group(0);
-      text = text.replaceAll(
-          group,
+      text = text?.replaceAll(
+          group!,
           group
               .replaceAll(',', '****')
               .replaceFirst('en:', '')
               .replaceFirst('fr:', ''));
     });
 
-    return Collection(text
-            .split(',')
-            .map((item) => item
-                .replaceAll('****', ',')
-                .replaceFirst('en:', '')
-                .replaceFirst('fr:', '')
-                .trim())
-            .toList(growable: false))
-        .distinct()
-        .toList(growable: false);
+    return text!
+        .split(',')
+        .map((item) => item
+            .replaceAll('****', ',')
+            .replaceFirst('en:', '')
+            .replaceFirst('fr:', '')
+            .trim())
+        .distinct;
   }
 }

@@ -5,13 +5,14 @@ import 'package:http/http.dart' as http;
 const String _baseUrl = 'https://fr.openfoodfacts.org';
 
 Future<dynamic> findProductByBarcode(String barcode) async {
-  print("Finding product $barcode");
+  print('Finding product $barcode');
 
   try {
-    var response = await http.get('$_baseUrl/api/v0/produit/$barcode.json');
+    var response =
+        await http.get(Uri.parse('$_baseUrl/api/v0/produit/$barcode.json'));
 
     if (response.statusCode != 200) {
-      print("Product $barcode not found");
+      print('Product $barcode not found');
       return null;
     } else {
       var body = json.decode(response.body);
@@ -30,15 +31,17 @@ Future<dynamic> findProductByBarcode(String barcode) async {
 }
 
 Future<dynamic> findProductByName(String name) async {
-  String productName = name.trim();
-  print("Finding product $productName");
+  var productName = name.trim();
+  print('Finding product $productName');
 
   try {
     var response = await http.get(
-        '$_baseUrl/cgi/search.pl?search_simple=1&json=1&action=process&search_terms=$productName');
+      Uri.parse(
+          '$_baseUrl/cgi/search.pl?search_simple=1&json=1&action=process&search_terms=$productName'),
+    );
 
     if (response.statusCode != 200) {
-      print("Product $productName not found");
+      print('Product $productName not found');
       return null;
     } else {
       var body = json.decode(response.body);

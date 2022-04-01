@@ -24,21 +24,21 @@ class ProductNutritionFacts {
         energy = _Nutriment.fromAPI(api, 'energy'),
         salt = _Nutriment.fromAPI(api, 'salt');
 
-  static String extractServingSizeQuantity(dynamic servingSize) {
+  static String? extractServingSizeQuantity(dynamic servingSize) {
     if (servingSize == null || servingSize is! String) {
       return null;
     }
 
-    var lastIndex = (servingSize as String).lastIndexOf(' ');
-    return (servingSize as String).substring(0, lastIndex);
+    var lastIndex = (servingSize).lastIndexOf(' ');
+    return (servingSize).substring(0, lastIndex);
   }
 
-  static String extractServingSizeUnit(dynamic servingSize) {
+  static String? extractServingSizeUnit(dynamic servingSize) {
     if (servingSize == null || servingSize is! String) {
       return null;
     }
 
-    var splitted = (servingSize as String).trim().split(" ");
+    var splitted = (servingSize).trim().split(' ');
     if (splitted.isNotEmpty) {
       return splitted[splitted.length - 1];
     } else {
@@ -64,7 +64,7 @@ class ProductNutritionFacts {
 }
 
 class _Nutriment {
-  final String unit;
+  final String? unit;
   final dynamic perServing;
   final dynamic per100g;
 
@@ -73,7 +73,7 @@ class _Nutriment {
         perServing = api['${name}_serving'],
         unit = api['${name}_unit'];
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic>? toJson() {
     if (unit == null && perServing == null && per100g == null) {
       return null;
     }
@@ -104,20 +104,20 @@ class ProductNutrientLevels {
             nutrientLevels['fat'], nutriments['fat_100g']);
 
   Map<String, dynamic> toJson() => {
-        'fat': fat?.toJson(),
-        'salt': salt?.toJson(),
-        'saturatedFat': saturatedFat?.toJson(),
-        'sugars': sugars?.toJson()
+        'fat': fat.toJson(),
+        'salt': salt.toJson(),
+        'saturatedFat': saturatedFat.toJson(),
+        'sugars': sugars.toJson()
       };
 }
 
 class _NutrientLevel {
-  final String level;
+  final String? level;
   final dynamic quantity;
 
   _NutrientLevel.fromAPI(this.level, this.quantity);
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic>? toJson() {
     if (quantity == null || level == null) {
       return null;
     }

@@ -1,5 +1,5 @@
+import '../../../../../utils/text_utils.dart';
 import '../../../../data/additives_list.dart';
-import '../../../../utils/text_utils.dart';
 import 'product_allergens.dart';
 import 'product_analysis.dart';
 import 'product_ingredients.dart';
@@ -30,21 +30,21 @@ class ProductV2 {
   final String barcode;
   final ProductPictures pictures;
   final String quantity;
-  final List<String> brands;
-  final List<String> countries;
-  final List<String> manufacturingCountries;
-  final List<String> packaging;
-  final List<String> stores;
-  final String nutriScore;
-  final String novaScore;
+  final List<String>? brands;
+  final List<String>? countries;
+  final List<String>? manufacturingCountries;
+  final List<String>? packaging;
+  final List<String>? stores;
+  final String? nutriScore;
+  final String? novaScore;
   final int ecoScore;
-  final String ecoScoreGrade;
-  final String packagingText;
+  final String? ecoScoreGrade;
+  final String? packagingText;
   final int nutritionScore;
   final ProductIngredients ingredients;
   final ProductTraces traces;
   final ProductAllergens allergens;
-  final Map<String, String> additives;
+  final Map<String, String>? additives;
   final ProductNutrientLevels nutrientLevels;
   final ProductNutritionFacts nutritionFacts;
   final ProductAnalysis analysis;
@@ -83,19 +83,19 @@ class ProductV2 {
         analysis = ProductAnalysis.fromAPI(
             api['product']['ingredients_analysis_tags']);
 
-  static Map<String, String> extractAdditives(List additivesTags) {
+  static Map<String, String>? extractAdditives(List? additivesTags) {
     if (additivesTags == null || additivesTags.isEmpty) {
       return null;
     }
 
-    Map<String, String> res = {};
+    var res = <String, String>{};
 
     for (var additive in additivesTags) {
       if (additive is String) {
         var additiveId = additive.split(':')[1].toUpperCase();
         var additiveName = additivesList[additiveId];
 
-        if (additiveId != null && additiveName != null) {
+        if (additiveName != null) {
           res[additiveId] = additiveName;
         }
       }
@@ -116,7 +116,7 @@ class ProductV2 {
       'countries': countries,
       'manufacturingCountries': manufacturingCountries,
       'nutriScore': nutriScore?.toUpperCase(),
-      'novaScore': novaScore != null ? int.tryParse(novaScore) : null,
+      'novaScore': novaScore != null ? int.tryParse(novaScore!) : null,
       'ecoScore': ecoScore,
       'ecoScoreGrade': ecoScoreGrade?.toUpperCase(),
       'nutritionScore': nutritionScore,

@@ -14,7 +14,7 @@ class InternalRequest {
     var version = url.pathSegments[0];
 
     if (version.startsWith(RegExp('v[0-9]*'))) {
-      return int.tryParse(version.substring(1));
+      return int.parse(version.substring(1));
     } else {
       return 1;
     }
@@ -43,10 +43,10 @@ class InternalRequest {
       return RequestMethod.UPDATE;
     }
 
-    return null;
+    throw Exception('Unknown METHOD $method');
   }
 
-  String queryParameters(String paramName) => _url.queryParameters[paramName];
+  String? queryParameters(String paramName) => _url.queryParameters[paramName];
 }
 
 enum RequestMethod { GET, PUT, DELETE, POST, UPDATE }

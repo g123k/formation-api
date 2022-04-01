@@ -20,14 +20,14 @@ class ProductAnalysis {
             unknownLabel: 'en:vegetarian-status-unknown',
             maybeLabel: 'en:maybe-vegetarian');
 
-  static ProductAnalysisValue extractAnalysisValue(List tags,
-      {String trueLabel,
-      String falseLabel,
-      String unknownLabel,
-      String maybeLabel}) {
+  static ProductAnalysisValue extractAnalysisValue(List? tags,
+      {String? trueLabel,
+      String? falseLabel,
+      String? unknownLabel,
+      String? maybeLabel}) {
     if (tags?.isEmpty ?? true) {
       return ProductAnalysisValue.unknown;
-    } else if (tags.contains(trueLabel)) {
+    } else if (tags!.contains(trueLabel)) {
       return ProductAnalysisValue.yes;
     } else if (tags.contains(falseLabel)) {
       return ProductAnalysisValue.no;

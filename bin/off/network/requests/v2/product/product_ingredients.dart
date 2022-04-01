@@ -1,9 +1,9 @@
+import '../../../../../utils/text_utils.dart';
 import '../../../../data/ingredients_list.dart';
-import '../../../../utils/text_utils.dart';
 
 class ProductIngredients {
-  final List<String> list;
-  final List<_IngredientItem> details;
+  final List<String>? list;
+  final List<_IngredientItem>? details;
   final bool containsPalmOil;
 
   ProductIngredients.fromAPI(Map<String, dynamic> api, String lng)
@@ -13,21 +13,16 @@ class ProductIngredients {
         containsPalmOil = _extractPalmOil(
             api['ingredients_from_or_that_may_be_from_palm_oil_n']);
 
-  static List<_IngredientItem> _extractDetails(List ingredients) {
+  static List<_IngredientItem>? _extractDetails(dynamic ingredients) {
     if (ingredients == null || ingredients is! List) {
       return null;
     }
 
-    List<_IngredientItem> list = [];
+    var list = <_IngredientItem>[];
 
     for (var ingredient in ingredients) {
       var ingredientItem = _IngredientItem.fromAPI(ingredient);
-
-      if (ingredientItem != null && ingredientItem.translations != null) {
-        list.add(ingredientItem);
-      } else {
-        print('Ingredient not found: $ingredient');
-      }
+      list.add(ingredientItem);
     }
 
     return list;
@@ -40,7 +35,7 @@ class ProductIngredients {
     return object >= 1;
   }
 
-  Map<String, Object> toJson(String language) => {
+  Map<String, dynamic> toJson(String? language) => {
         'containsPalmOil': containsPalmOil,
         'list': list,
         'details': details
@@ -58,8 +53,8 @@ class ProductIngredients {
                 return i.toJson();
               }
             })
-            ?.where((i) => i != null)
-            ?.toList(growable: false),
+            .where((i) => i != null)
+            .toList(growable: false),
       };
 }
 
@@ -67,8 +62,8 @@ class _IngredientItem {
   final String id;
   final bool vegan;
   final bool vegetarian;
-  final String percent;
-  final List<IngredientTranslation> translations;
+  final String? percent;
+  final List<IngredientTranslation>? translations;
   final bool containsPalmOil;
 
   _IngredientItem.fromAPI(Map<String, dynamic> api)
@@ -79,11 +74,11 @@ class _IngredientItem {
         translations = ingredientsTranslations(api['id']),
         containsPalmOil = api['from_palm_oil'] == 'yes';
 
-  Map<String, Object> toJson() => {
+  Map<String, dynamic> toJson() => {
         'vegan': vegan,
         'vegetarian': vegetarian,
         'translations':
-            translations?.map((t) => t.toJson())?.toList(growable: false),
+            translations?.map((t) => t.toJson()).toList(growable: false),
         'containsPalmOil': containsPalmOil,
         'percent': percent
       };

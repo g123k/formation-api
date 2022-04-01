@@ -285,8 +285,8 @@ List<IngredientTranslation> ingredientsTranslations(String id) {
   }
 }
 
-IngredientTranslation findIngredientTranslation(
-    List<IngredientTranslation> list, String language) {
+IngredientTranslation? findIngredientTranslation(
+    List<IngredientTranslation>? list, String? language) {
   if (list != null && language != null) {
     for (var translation in list) {
       if (translation.language == language) {
