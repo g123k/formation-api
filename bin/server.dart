@@ -1,6 +1,7 @@
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as io;
 
+import 'howlongtobeat/howlongtobeat_server.dart';
 import 'idf/idf_server.dart';
 import 'off/off_server.dart';
 import 'utils/network/request.dart';
@@ -29,6 +30,10 @@ Future<shelf.Response> _onNewRequest(shelf.Request request) async {
           return await findProductRequest(urlRequest);
         case 'idf_elevators':
           return await findElevators(urlRequest);
+        case 'search_game':
+          return await searchGames(urlRequest);
+        case 'game':
+          return await searchGameById(urlRequest);
       }
     }
 
