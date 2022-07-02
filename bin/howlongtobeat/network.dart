@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 
 const String _baseUrl =
-    'https://us-central1-formation-31b4b.cloudfunctions.net/';
+    'https://us-central1-mes-tests-3fbf6.cloudfunctions.net/';
 
 Future<dynamic> searchGame(String game) async {
   try {
