@@ -96,17 +96,24 @@ class Product {
 }
 
 class NutritionFacts {
-  final String servingSize;
+  final String? servingSize;
   final Nutriment calories;
-  final Nutriment fat;
-  final Nutriment saturatedFat;
-  final Nutriment carbohydrate;
-  final Nutriment sugar;
-  final Nutriment fiber;
-  final Nutriment proteins;
-  final Nutriment sodium;
-  final Nutriment salt;
-  final Nutriment energy;
+  final Nutriment? fat;
+  final Nutriment? saturatedFat;
+  final Nutriment? carbohydrate;
+  final Nutriment? sugar;
+  final Nutriment? fiber;
+  final Nutriment? proteins;
+  final Nutriment? sodium;
+  final Nutriment? salt;
+  final Nutriment? energy;
+  final Nutriment? bicarbonate;
+  final Nutriment? calcium;
+  final Nutriment? chloride;
+  final Nutriment? magnesium;
+  final Nutriment? nitrate;
+  final Nutriment? potassium;
+  final Nutriment? silica;
 
   NutritionFacts.fromAPI(Map<String, dynamic> api, dynamic servingSize)
       : servingSize = servingSize,
@@ -119,7 +126,14 @@ class NutritionFacts {
         proteins = Nutriment.fromAPI(api, 'proteins'),
         sodium = Nutriment.fromAPI(api, 'sodium'),
         energy = Nutriment.fromAPI(api, 'energy'),
-        salt = Nutriment.fromAPI(api, 'salt');
+        salt = Nutriment.fromAPI(api, 'salt'),
+        bicarbonate = Nutriment.fromAPI(api, 'bicarbonate'),
+        calcium = Nutriment.fromAPI(api, 'calcium'),
+        chloride = Nutriment.fromAPI(api, 'chloride'),
+        magnesium = Nutriment.fromAPI(api, 'magnesium'),
+        nitrate = Nutriment.fromAPI(api, 'nitrate'),
+        potassium = Nutriment.fromAPI(api, 'potassium'),
+        silica = Nutriment.fromAPI(api, 'silica');
 
   static String? extractServingSizeQuantity(dynamic servingSize) {
     if (servingSize == null || servingSize is! String) {
@@ -144,19 +158,31 @@ class NutritionFacts {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    var json = {
       'servingSize': servingSize,
       'calories': calories.toJson(),
-      'fat': fat.toJson(),
-      'saturatedFat': saturatedFat.toJson(),
-      'carbohydrate': carbohydrate.toJson(),
-      'sugar': sugar.toJson(),
-      'fiber': fiber.toJson(),
-      'proteins': proteins.toJson(),
-      'sodium': sodium.toJson(),
-      'salt': salt.toJson(),
-      'energy': energy.toJson(),
+      'fat': fat?.toJson(),
+      'saturatedFat': saturatedFat?.toJson(),
+      'carbohydrate': carbohydrate?.toJson(),
+      'sugar': sugar?.toJson(),
+      'fiber': fiber?.toJson(),
+      'proteins': proteins?.toJson(),
+      'sodium': sodium?.toJson(),
+      'salt': salt?.toJson(),
+      'energy': energy?.toJson(),
+      'bicarbonate': bicarbonate?.toJson(),
+      'calcium': calcium?.toJson(),
+      'chloride': chloride?.toJson(),
+      'magnesium': magnesium?.toJson(),
+      'nitrate': nitrate?.toJson(),
+      'potassium': potassium?.toJson(),
+      'silica': silica?.toJson(),
     };
+
+    // Remove null items
+    json.removeWhere((key, value) => value == null);
+
+    return json;
   }
 }
 
