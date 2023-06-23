@@ -70,7 +70,7 @@ class _IngredientItem {
       : id = api['id'],
         vegan = api['vegan'] == 'yes',
         vegetarian = api['vegetarian'] == 'yes',
-        percent = api['percent'],
+        percent = api['percent'].toString(),
         translations = ingredientsTranslations(api['id']),
         containsPalmOil = api['from_palm_oil'] == 'yes';
 
