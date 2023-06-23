@@ -111,7 +111,7 @@ class ProductV2 {
       'name': name,
       'altName': altName,
       'barcode': barcode,
-      'pictures': pictures.toJson(),
+      'pictures': pictures?.toJson(),
       'quantity': quantity,
       'brands': brands,
       'stores': stores,

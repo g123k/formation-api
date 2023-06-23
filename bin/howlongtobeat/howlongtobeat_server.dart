@@ -2,7 +2,6 @@ import 'package:shelf/shelf.dart' as shelf;
 
 import '../server.dart';
 import '../utils/network/request.dart';
-import '../utils/network/response.dart';
 import 'network.dart';
 
 Future<shelf.Response> searchGames(InternalRequest request) async {
