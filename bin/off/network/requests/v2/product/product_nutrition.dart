@@ -1,15 +1,15 @@
 class ProductNutritionFacts {
-  final String servingSize;
-  final _Nutriment calories;
-  final _Nutriment fat;
-  final _Nutriment saturatedFat;
-  final _Nutriment carbohydrate;
-  final _Nutriment sugar;
-  final _Nutriment fiber;
-  final _Nutriment proteins;
-  final _Nutriment sodium;
-  final _Nutriment salt;
-  final _Nutriment energy;
+  final String? servingSize;
+  final _Nutriment? calories;
+  final _Nutriment? fat;
+  final _Nutriment? saturatedFat;
+  final _Nutriment? carbohydrate;
+  final _Nutriment? sugar;
+  final _Nutriment? fiber;
+  final _Nutriment? proteins;
+  final _Nutriment? sodium;
+  final _Nutriment? salt;
+  final _Nutriment? energy;
 
   ProductNutritionFacts.fromAPI(Map<String, dynamic> api, dynamic servingSize)
       : servingSize = servingSize,
@@ -49,16 +49,16 @@ class ProductNutritionFacts {
   Map<String, dynamic> toJson() {
     return {
       'servingSize': servingSize,
-      'calories': calories.toJson(),
-      'fat': fat.toJson(),
-      'saturatedFat': saturatedFat.toJson(),
-      'carbohydrate': carbohydrate.toJson(),
-      'sugar': sugar.toJson(),
-      'fiber': fiber.toJson(),
-      'proteins': proteins.toJson(),
-      'sodium': sodium.toJson(),
-      'salt': salt.toJson(),
-      'energy': energy.toJson(),
+      'calories': calories?.toJson(),
+      'fat': fat?.toJson(),
+      'saturatedFat': saturatedFat?.toJson(),
+      'carbohydrate': carbohydrate?.toJson(),
+      'sugar': sugar?.toJson(),
+      'fiber': fiber?.toJson(),
+      'proteins': proteins?.toJson(),
+      'sodium': sodium?.toJson(),
+      'salt': salt?.toJson(),
+      'energy': energy?.toJson(),
     };
   }
 }

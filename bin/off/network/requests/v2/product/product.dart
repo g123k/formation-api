@@ -25,11 +25,11 @@ class Products {
 
 class ProductV2 {
   final String name;
-  final String altName;
-  final String url;
+  final String? altName;
+  final String? url;
   final String barcode;
-  final ProductPictures pictures;
-  final String quantity;
+  final ProductPictures? pictures;
+  final String? quantity;
   final List<String>? brands;
   final List<String>? countries;
   final List<String>? manufacturingCountries;
@@ -37,17 +37,17 @@ class ProductV2 {
   final List<String>? stores;
   final String? nutriScore;
   final String? novaScore;
-  final int ecoScore;
+  final int? ecoScore;
   final String? ecoScoreGrade;
   final String? packagingText;
-  final int nutritionScore;
-  final ProductIngredients ingredients;
-  final ProductTraces traces;
-  final ProductAllergens allergens;
+  final int? nutritionScore;
+  final ProductIngredients? ingredients;
+  final ProductTraces? traces;
+  final ProductAllergens? allergens;
   final Map<String, String>? additives;
-  final ProductNutrientLevels nutrientLevels;
-  final ProductNutritionFacts nutritionFacts;
-  final ProductAnalysis analysis;
+  final ProductNutrientLevels? nutrientLevels;
+  final ProductNutritionFacts? nutritionFacts;
+  final ProductAnalysis? analysis;
 
   ProductV2.fromAPI(Map<String, dynamic> api, String lng)
       : name = api['product']['product_name_$lng'] ??
@@ -80,8 +80,10 @@ class ProductV2 {
             api['product']['nutriments'], api['product']['serving_size']),
         nutrientLevels = ProductNutrientLevels.fromAPI(
             api['product']['nutrient_levels'], api['product']['nutriments']),
-        analysis = ProductAnalysis.fromAPI(
-            api['product']['ingredients_analysis_tags']);
+        analysis = api['product']['ingredients_analysis_tags'] != null
+            ? ProductAnalysis.fromAPI(
+                api['product']['ingredients_analysis_tags'])
+            : null;
 
   static Map<String, String>? extractAdditives(List? additivesTags) {
     if (additivesTags == null || additivesTags.isEmpty) {
@@ -120,14 +122,14 @@ class ProductV2 {
       'ecoScore': ecoScore,
       'ecoScoreGrade': ecoScoreGrade?.toUpperCase(),
       'nutritionScore': nutritionScore,
-      'ingredients': ingredients.toJson(language),
-      'nutrientLevels': nutrientLevels.toJson(),
-      'nutritionFacts': nutritionFacts.toJson(),
-      'traces': traces.toJson(language),
+      'ingredients': ingredients?.toJson(language),
+      'nutrientLevels': nutrientLevels?.toJson(),
+      'nutritionFacts': nutritionFacts?.toJson(),
+      'traces': traces?.toJson(language),
       'additives': additives,
-      'allergens': allergens.toJson(language),
+      'allergens': allergens?.toJson(language),
       'packaging': packaging,
-      'analysis': analysis.toJson()
+      'analysis': analysis?.toJson()
     };
   }
 }

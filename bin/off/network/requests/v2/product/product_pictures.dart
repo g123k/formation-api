@@ -1,7 +1,7 @@
 class ProductPictures {
   final String front;
   final String product;
-  final String ingredients;
+  final String? ingredients;
   final String nutrition;
 
   ProductPictures.fromAPI(Map<String, dynamic> api)
