@@ -47,6 +47,8 @@ class InternalRequest {
   }
 
   String? queryParameters(String paramName) => _url.queryParameters[paramName];
+
+  Map<String, String> get queryAllParameters => _url.queryParameters;
 }
 
 enum RequestMethod { GET, PUT, DELETE, POST, UPDATE }
