@@ -8,7 +8,8 @@ Future<shelf.Response> middlewareToComicVine(InternalRequest request) async {
 
   var endpoint = request.queryParameters('url');
   if (endpoint == null || endpoint.trim().isEmpty) {
-    return shelf.Response.badRequest();
+    return shelf.Response.badRequest(
+        headers: {'Access-Control-Allow-Origin': '*'});
   }
 
   var params = Map<String, String>.from(request.queryAllParameters);
@@ -19,8 +20,12 @@ Future<shelf.Response> middlewareToComicVine(InternalRequest request) async {
 
   var response = await http.get(uri);
   if (response.statusCode == 200) {
-    return shelf.Response.ok(response.body);
+    return shelf.Response.ok(response.body,
+        headers: {'Access-Control-Allow-Origin': '*'});
   } else {
-    return shelf.Response.badRequest(body: response.body);
+    return shelf.Response.badRequest(
+      body: response.body,
+      headers: {'Access-Control-Allow-Origin': '*'},
+    );
   }
 }
