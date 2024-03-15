@@ -20,12 +20,17 @@ Future<shelf.Response> middlewareToComicVine(InternalRequest request) async {
 
   var response = await http.get(uri);
   if (response.statusCode == 200) {
-    return shelf.Response.ok(response.body,
-        headers: {'Access-Control-Allow-Origin': '*'});
+    return shelf.Response.ok(response.body, headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json; charset=utf-8',
+    });
   } else {
     return shelf.Response.badRequest(
       body: response.body,
-      headers: {'Access-Control-Allow-Origin': '*'},
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json; charset=utf-8',
+      },
     );
   }
 }
